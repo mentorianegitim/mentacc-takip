@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mentacc Takip - Ders Takip</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-gradient-to-r from-yellow-700 to-blue-900 min-h-screen">
+  <div class="container mx-auto p-4">
+    <header class="mb-6 text-center">
+      <h1 class="text-3xl font-bold text-white">Mentacc Takip</h1>
+      <img src="fox-mascot.png" alt="Tilki Maskot" class="mx-auto mt-4 w-32 h-32 sm:w-40 sm:h-40">
+      <div class="mt-4">
+        <select id="theme-selector" onchange="changeTheme(this.value)" class="p-2 rounded-lg bg-white text-black">
+          <option value="default">Varsayılan Tema</option>
+          <option value="neon">Neon Tema</option>
+          <option value="pastel">Pastel Tema</option>
+          <option value="dark">Karanlık Tema</option>
+        </select>
+      </div>
+      <button onclick="goToDashboard()" class="mt-4 bg-red-900 text-white p-2 rounded-lg hover:bg-red-800">Ana Sayfaya Dön</button>
+    </header>
+
+    <!-- Hata ve Başarı Mesajları -->
+    <div id="error-message" class="hidden bg-red-900 text-white p-3 rounded-lg mb-4"></div>
+    <div id="success-message" class="hidden bg-yellow-700 text-black p-3 rounded-lg mb-4"></div>
+
+    <!-- Ders Gir Bölümü -->
+    <div id="add-lesson-form" class="bg-white p-6 rounded-lg shadow-lg max-w-md mx-auto">
+      <h2 class="text-2xl font-semibold mb-4 text-center text-black">Ders Gir</h2>
+      <form id="addLessonForm" onsubmit="addLesson(event)">
+        <input type="text" id="lessonStudentName" placeholder="Öğrenci Adı Soyadı" class="w-full p-2 mb-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-red-900 text-black">
+        <input type="datetime-local" id="lessonDateTime" class="w-full p-2 mb-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-red-900 text-black">
+        <input type="number" id="lessonFee" placeholder="Ders Ücreti (TL)" class="w-full p-2 mb-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-red-900 text-black">
+        <select id="paymentStatus" class="w-full p-2 mb-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-red-900 text-black" onchange="togglePartialPaymentInput()">
+          <option value="" disabled selected>Ödeme Durumu Seç</option>
+          <option value="Ödendi">Ödendi</option>
+          <option value="Ödenmedi">Ödenmedi</option>
+          <option value="Kısmi Ödeme">Kısmi Ödeme</option>
+        </select>
+        <input type="number" id="partialPaymentAmount" placeholder="Kısmi Ödeme Miktarı (TL)" class="w-full p-2 mb-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-red-900 text-black hidden">
+        <textarea id="lessonTopic" placeholder="Dersin Konusu" class="w-full p-2 mb-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-red-900 text-black" rows="3"></textarea>
+        <button type="submit" class="w-full bg-red-900 text-white p-2 rounded-lg hover:bg-red-800 transition">
+          Kaydet
+        </button>
+      </form>
+      <button onclick="showLessonList()" class="w-full mt-3 bg-red-900 text-white p-2 rounded-lg hover:bg-red-800 transition">
+        Ders Gör
+      </button>
+    </div>
+
+    <!-- Ders Gör Bölümü -->
+    <div id="lesson-list" class="hidden bg-white p-6 rounded-lg shadow-lg mx-auto">
+      <h2 class="text-2xl font-semibold mb-4 text-center text-black">Ders Gör</h2>
+      <div class="mb-4">
+        <input type="text" id="filterLessonStudentName" placeholder="Öğrenci Adı Soyadı ile Filtrele" class="w-full p-2 mb-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-red-900 text-black">
+        <input type="date" id="filterLessonStartDate" placeholder="Başlangıç Tarihi" class="w-full p-2 mb-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-red-900 text-black">
+        <input type="date" id="filterLessonEndDate" placeholder="Bitiş Tarihi" class="w-full p-2 mb-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-red-900 text-black">
+        <button onclick="filterLessons()" class="w-full bg-red-900 text-white p-2 rounded-lg hover:bg-red-800 transition">
+          Filtrele
+        </button>
+      </div>
+      <table id="lesson-table" class="w-full border-collapse">
+        <thead>
+          <tr class="bg-gray-200">
+            <th class="border p-2 text-black">Öğrenci Adı Soyadı</th>
+            <th class="border p-2 text-black">Tarih ve Saat</th>
+            <th class="border p-2 text-black">Ders Ücreti</th>
+            <th class="border p-2 text-black">Ödeme Durumu</th>
+            <th class="border p-2 text-black">Ödenen Miktar</th>
+            <th class="border p-2 text-black">Dersin Konusu</th>
+          </tr>
+        </thead>
+        <tbody id="lesson-table-body"></tbody>
+      </table>
+      <button onclick="downloadLessonPDF()" class="w-full mt-3 bg-yellow-700 text-black p-2 rounded-lg hover:bg-yellow-600 transition">
+        PDF Çıktısı Al
+      </button>
+      <button onclick="downloadLessonExcel()" class="w-full mt-3 bg-blue-900 text-white p-2 rounded-lg hover:bg-blue-800 transition">
+        Excel Çıktısı Al
+      </button>
+      <button onclick="showAddLessonForm()" class="w-full mt-3 bg-gray-500 text-white p-2 rounded-lg hover:bg-gray-600 transition">
+        Geri Dön
+      </button>
+    </div>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>

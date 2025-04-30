@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mentacc Takip - Ana Sayfa</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-gradient-to-r from-yellow-700 to-blue-900 min-h-screen">
+  <div class="container mx-auto p-4">
+    <header class="mb-6 text-center">
+      <h1 class="text-3xl font-bold text-white">Mentacc Takip</h1>
+      <img src="fox-mascot.png" alt="Tilki Maskot" class="mx-auto mt-4 w-32 h-32 sm:w-40 sm:h-40">
+      <div class="mt-4">
+        <select id="theme-selector" onchange="changeTheme(this.value)" class="p-2 rounded-lg bg-white text-black">
+          <option value="default">Varsayılan Tema</option>
+          <option value="neon">Neon Tema</option>
+          <option value="pastel">Pastel Tema</option>
+          <option value="dark">Karanlık Tema</option>
+        </select>
+      </div>
+      <button onclick="logout()" class="mt-4 bg-red-900 text-white p-2 rounded-lg hover:bg-red-800">Çıkış Yap</button>
+    </header>
+
+    <!-- Hata ve Başarı Mesajları -->
+    <div id="error-message" class="hidden bg-red-900 text-white p-3 rounded-lg mb-4"></div>
+    <div id="success-message" class="hidden bg-yellow-700 text-black p-3 rounded-lg mb-4"></div>
+
+    <!-- Ana Sayfa Butonları -->
+    <div id="dashboard" class="bg-white p-6 rounded-lg shadow-lg max-w-md mx-auto">
+      <h2 class="text-2xl font-semibold mb-4 text-center text-black">Hoş Geldin!</h2>
+      <button onclick="showAddStudentForm()" class="w-full bg-red-900 text-white p-2 rounded-lg mb-3 hover:bg-red-800 transition">
+        Öğrenci Ekle
+      </button>
+      <button onclick="showStudentList()" class="w-full bg-red-900 text-white p-2 rounded-lg mb-3 hover:bg-red-800 transition">
+        Öğrenci Listele
+      </button>
+      <button onclick="showAddPaymentForm()" class="w-full bg-red-900 text-white p-2 rounded-lg mb-3 hover:bg-red-800 transition">
+        Ödeme Gir
+      </button>
+      <button onclick="goToLessonTracking()" class="w-full bg-red-900 text-white p-2 rounded-lg hover:bg-red-800 transition">
+        Ders Takip
+      </button>
+    </div>
+
+    <!-- Öğrenci Ekle Formu -->
+    <div id="add-student-form" class="hidden bg-white p-6 rounded-lg shadow-lg max-w-md mx-auto">
+      <h2 class="text-2xl font-semibold mb-4 text-center text-black">Öğrenci Ekle</h2>
+      <form id="addStudentForm" onsubmit="addStudent(event)">
+        <input type="text" id="studentFirstName" placeholder="Ad" class="w-full p-2 mb-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-red-900 text-black">
+        <input type="text" id="studentLastName" placeholder="Soyad" class="w-full p-2 mb-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-red-900 text-black">
+        <input type="text" id="school" placeholder="Okul" class="w-full p-2 mb-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-red-900 text-black">
+        <select id="class" class="w-full p-2 mb-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-red-900 text-black">
+          <option value="" disabled selected>Sınıf Seç</option>
+          <option value="5. Sınıf">5. Sınıf</option>
+          <option value="6. Sınıf">6. Sınıf</option>
+          <option value="7. Sınıf">7. Sınıf</option>
+          <option value="8. Sınıf">8. Sınıf</option>
+          <option value="9. Sınıf">9. Sınıf</option>
+          <option value="10. Sınıf">10. Sınıf</option>
+          <option value="11. Sınıf">11. Sınıf</option>
+          <option value="12. Sınıf">12. Sınıf</option>
+          <option value="Mezun">Mezun</option>
+        </select>
+        <select id="field" class="w-full p-2 mb-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-red-900 text-black">
+          <option value="" disabled selected>Alan Seç</option>
+          <option value="Say">Say</option>
+          <option value="EA">EA</option>
+          <option value="Söz">Söz</option>
+          <option value="Dil">Dil</option>
+          <option value="LGS">LGS</option>
+        </select>
+        <select id="exam" class="w-full p-2 mb-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-red-900 text-black">
+          <option value="" disabled selected>Sınav Seç</option>
+          <option value="TYT">TYT</option>
+          <option value="AYT">AYT</option>
+          <option value="YKS">YKS</option>
+          <option value="LGS">LGS</option>
+          <option value="MSÜ">MSÜ</option>
+        </select>
+        <input type="text" id="phone" placeholder="Telefon (örn: 5551234567)" class="w-full p-2 mb-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-red-900 text-black">
+        <input type="email" id="studentEmail" placeholder="E-posta" class="w-full p-2 mb-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-red-900 text-black">
+        <input type="text" id="parentName" placeholder="Veli Adı" class="w-full p-2 mb-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-red-900 text-black">
+        <input type="text" id="parentRelation" placeholder="Veli Yakınlığı (Baba, Anne vb.)" class="w-full p-2 mb-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-red-900 text-black">
+        <input type="text" id="parentPhone" placeholder="Veli Telefonu" class="w-full p-2 mb-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-red-900 text-black">
+        <input type="text" id="sibling1Name" placeholder="Kardeş 1 Adı (varsa)" class="w-full p-2 mb-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-red-900 text-black">
+        <input type="text" id="sibling1School" placeholder="Kardeş 1 Okulu" class="w-full p-2 mb-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-red-900 text-black">
+        <input type="text" id="sibling1Class" placeholder="Kardeş 1 Sınıfı" class="w-full p-2 mb-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-red-900 text-black">
+        <input type="text" id="sibling2Name" placeholder="Kardeş 2 Adı (varsa)" class="w-full p-2 mb-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-red-900 text-black">
+        <input type="text" id="sibling2School" placeholder="Kardeş 2 Okulu" class="w-full p-2 mb-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-red-900 text-black">
+        <input type="text" id="sibling2Class" placeholder="Kardeş 2 Sınıfı" class="w-full p-2 mb-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-red-900 text-black">
+        <input type="text" id="sibling3Name" placeholder="Kardeş 3 Adı (varsa)" class="w-full p-2 mb-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-red-900 text-black">
+        <input type="text" id="sibling3School" placeholder="Kardeş 3 Okulu" class="w-full p-2 mb-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-red-900 text-black">
+        <input type="text" id="sibling3Class" placeholder="Kardeş 3 Sınıfı" class="w-full p-2 mb-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-red-900 text-black">
+        <input type="text" id="sibling4Name" placeholder="Kardeş 4 Adı (varsa)" class="w-full p-2 mb-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-red-900 text-black">
+        <input type="text" id="sibling4School" placeholder="Kardeş 4 Okulu" class="w-full p-2 mb-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-red-900 text-black">
+        <input type="text" id="sibling4Class" placeholder="Kardeş 4 Sınıfı" class="w-full p-2 mb-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-red-900 text-black">
+        <input type="number" id="fee" placeholder="Ders Ücreti (TL)" class="w-full p-2 mb-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-red-900 text-black">
+        <select id="paymentMethod" class="w-full p-2 mb-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-red-900 text-black">
+          <option value="" disabled selected>Ödeme Şekli Seç</option>
+          <option value="Aylık">Aylık</option>
+          <option value="Haftalık">Haftalık</option>
+          <option value="Dönemlik">Dönemlik</option>
+        </select>
+        <input type="date" id="registrationDate" class="w-full p-2 mb-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-red-900 text-black">
+        <button type="submit" class="w-full bg-red-900 text-white p-2 rounded-lg hover:bg-red-800 transition">
+          Öğrenci Ekle
+        </button>
+      </form>
+      <button onclick="showDashboard()" class="w-full mt-3 bg-gray-500 text-white p-2 rounded-lg hover:bg-gray-600 transition">
+        Geri Dön
+      </button>
+    </div>
+
+    <!-- Öğrenci Listele -->
+    <div id="student-list" class="hidden bg-white p-6 rounded-lg shadow-lg mx-auto">
+      <h2 class="text-2xl font-semibold mb-4 text-center text-black">Öğrenci Listesi</h2>
+      <div class="mb-4">
+        <input type="text" id="filterName" placeholder="Ad ile Filtrele" class="w-full p-2 mb-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-red-900 text-black">
+        <select id="filterClass" class="w-full p-2 mb-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-red-900 text-black">
+          <option value="">Sınıf Filtrele (Tümü)</option>
+          <option value="5. Sınıf">5. Sınıf</option>
+          <option value="6. Sınıf">6. Sınıf</option>
+          <option value="7. Sınıf">7. Sınıf</option>
+          <option value="8. Sınıf">8. Sınıf</option>
+          <option value="9. Sınıf">9. Sınıf</option>
+          <option value="10. Sınıf">10. Sınıf</option>
+          <option value="11. Sınıf">11. Sınıf</option>
+          <option value="12. Sınıf">12. Sınıf</option>
+          <option value="Mezun">Mezun</option>
+        </select>
+        <input type="text" id="filterSchool" placeholder="Okul ile Filtrele" class="w-full p-2 mb-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-red-900 text-black">
+        <select id="filterField" class="w-full p-2 mb-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-red-900 text-black">
+          <option value="">Alan Filtrele (Tümü)</option>
+          <option value="Say">Say</option>
+          <option value="EA">EA</option>
+          <option value="Söz">Söz</option>
+          <option value="Dil">Dil</option>
+          <option value="LGS">LGS</option>
+        </select>
+        <select id="filterExam" class="w-full p-2 mb-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-red-900 text-black">
+          <option value="">Sınav Filtrele (Tümü)</option>
+          <option value="TYT">TYT</option>
+          <option value="AYT">AYT</option>
+          <option value="YKS">YKS</option>
+          <option value="LGS">LGS</option>
+          <option value="MSÜ">MSÜ</option>
+        </select>
+        <select id="filterPaymentMethod" class="w-full p-2 mb-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-red-900 text-black">
+          <option value="">Ödeme Şekli Filtrele (Tümü)</option>
+          <option value="Aylık">Aylık</option>
+          <option value="Haftalık">Haftalık</option>
+          <option value="Dönemlik">Dönemlik</option>
+        </select>
+        <input type="date" id="filterStartDate" placeholder="Başlangıç Tarihi" class="w-full p-2 mb-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-red-900 text-black">
+        <input type="date" id="filterEndDate" placeholder="Bitiş Tarihi" class="w-full p-2 mb-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-red-900 text-black">
+        <button onclick="filterStudents()" class="w-full bg-red-900 text-white p-2 rounded-lg hover:bg-red-800 transition">
+          Filtrele
+        </button>
+      </div>
+      <table id="student-table" class="w-full border-collapse">
+        <thead>
+          <tr class="bg-gray-200">
+            <th class="border p-2 text-black">Ad Soyad</th>
+            <th class="border p-2 text-black">Sınıf</th>
+            <th class="border p-2 text-black">Okul</th>
+            <th class="border p-2 text-black">Alan</th>
+            <th class="border p-2 text-black">Sınav</th>
+            <th class="border p-2 text-black">Telefon</th>
+            <th class="border p-2 text-black">E-posta</th>
+            <th class="border p-2 text-black">Ders Ücreti</th>
+            <th class="border p-2 text-black">Ödeme Şekli</th>
+            <th class="border p-2 text-black">Kayıt Tarihi</th>
+          </tr>
+        </thead>
+        <tbody id="student-table-body"></tbody>
+      </table>
+      <button onclick="downloadPDF()" class="w-full mt-3 bg-yellow-700 text-black p-2 rounded-lg hover:bg-yellow-600 transition">
+        PDF Çıktısı Al
+      </button>
+      <button onclick="downloadExcel()" class="w-full mt-3 bg-blue-900 text-white p-2 rounded-lg hover:bg-blue-800 transition">
+        Excel Çıktısı Al
+      </button>
+      <button onclick="showDashboard()" class="w-full mt-3 bg-gray-500 text-white p-2 rounded-lg hover:bg-gray-600 transition">
+        Geri Dön
+      </button>
+    </div>
+
+    <!-- Ödeme Gir Formu -->
+    <div id="add-payment-form" class="hidden bg-white p-6 rounded-lg shadow-lg max-w-md mx-auto">
+      <h2 class="text-2xl font-semibold mb-4 text-center text-black">Ödeme Gir</h2>
+      <form id="addPaymentForm" onsubmit="addPayment(event)">
+        <input type="text" id="paymentStudentName" placeholder="Öğrenci Adı Soyadı" class="w-full p-2 mb-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-red-900 text-black">
+        <select id="paymentMethodPayment" class="w-full p-2 mb-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-red-900 text-black">
+          <option value="" disabled selected>Ödeme Şekli Seç</option>
+          <option value="Aylık">Aylık</option>
+          <option value="Haftalık">Haftalık</option>
+          <option value="Dönemlik">Dönemlik</option>
+        </select>
+        <input type="number" id="paymentAmount" placeholder="Ödeme Miktarı (TL)" class="w-full p-2 mb-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-red-900 text-black">
+        <input type="date" id="paymentDate" class="w-full p-2 mb-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-red-900 text-black">
+        <input type="text" id="payer" placeholder="Ödeyen Kişi" class="w-full p-2 mb-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-red-900 text-black">
+        <input type="text" id="receiver" placeholder="Ödemeyi Alan Kişi" class="w-full p-2 mb-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-red-900 text-black">
+        <button type="submit" class="w-full bg-red-900 text-white p-2 rounded-lg hover:bg-red-800 transition">
+          Ödeme Ekle
+        </button>
+      </form>
+      <button onclick="showDashboard()" class="w-full mt-3 bg-gray-500 text-white p-2 rounded-lg hover:bg-gray-600 transition">
+        Geri Dön
+      </button>
+    </div>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>

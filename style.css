@@ -1,0 +1,293 @@
+body {
+  font-family: 'Arial', sans-serif;
+}
+
+h1, h2 {
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+input, select, button {
+  transition: all 0.3s ease;
+}
+
+input:focus, select:focus {
+  box-shadow: 0 0 8px rgba(139, 0, 0, 0.5);
+}
+
+button:hover {
+  transform: scale(1.02);
+}
+
+table {
+  border: 1px solid #000000;
+}
+
+th, td {
+  border: 1px solid #000000;
+  padding: 8px;
+  text-align: center;
+}
+
+th {
+  background-color: #DAA520;
+  color: #000000;
+}
+
+tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+tr:hover {
+  background-color: #e0e0e0;
+}
+
+#student-table {
+  margin-top: 20px;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+  display: block;
+}
+
+@media (max-width: 640px) {
+  h1 {
+    font-size: 1.5rem;
+  }
+
+  h2 {
+    font-size: 1.25rem;
+  }
+
+  .container {
+    padding: 10px;
+  }
+
+  input, select, button {
+    font-size: 0.9rem;
+  }
+
+  #student-table th, #student-table td {
+    font-size: 0.8rem;
+    padding: 5px;
+  }
+}
+
+/* Varsayılan Tema */
+body.theme-default {
+  background: linear-gradient(to right, #DAA520, #1E3A8A) !important;
+}
+
+/* Neon Tema */
+body.theme-neon {
+  background: linear-gradient(to right, #39FF14, #FF10F0, #4B0082) !important;
+}
+
+body.theme-neon h1,
+body.theme-neon h2 {
+  color: #FFFFFF;
+  text-shadow: 0 0 10px #39FF14;
+}
+
+body.theme-neon button:not(.bg-gray-500) {
+  background-color: #FF10F0;
+  color: #FFFFFF;
+}
+
+body.theme-neon button:not(.bg-gray-500):hover {
+  background-color: #FF66B2;
+}
+
+body.theme-neon input:focus,
+body.theme-neon select:focus {
+  box-shadow: 0 0 8px rgba(255, 16, 240, 0.5);
+}
+
+/* Pastel Tema */
+body.theme-pastel {
+  background: linear-gradient(to right, #A3BFFA, #FBB6CE, #FDFD96) !important;
+}
+
+body.theme-pastel h1,
+body.theme-pastel h2 {
+  color: #333333;
+  text-shadow: none;
+}
+
+body.theme-pastel button:not(.bg-gray-500) {
+  background-color: #FBB6CE;
+  color: #333333;
+}
+
+body.theme-pastel button:not(.bg-gray-500):hover {
+  background-color: #FCCDE5;
+}
+
+body.theme-pastel input:focus,
+body.theme-pastel select:focus {
+  box-shadow: 0 0 8px rgba(251, 182, 206, 0.5);
+}
+
+/* Karanlık Tema */
+body.theme-dark {
+  background: #1A1A1A !important;
+}
+
+body.theme-dark h1,
+body.theme-dark h2 {
+  color: #FFFFFF;
+  text-shadow: none;
+}
+
+body.theme-dark .bg-white {
+  background-color: #333333;
+}
+
+body.theme-dark button:not(.bg-gray-500) {
+  background-color: #8B0000;
+  color: #FFFFFF;
+}
+
+body.theme-dark button:not(.bg-gray-500):hover {
+  background-color: #A52A2A;
+}
+
+body.theme-dark input,
+body.theme-dark select,
+body.theme-dark th,
+body.theme-dark td,
+body.theme-dark p {
+  color: #FFFFFF;
+}
+
+body.theme-dark input:focus,
+body.theme-dark select:focus {
+  box-shadow: 0 0 8px rgba(139, 0, 0, 0.5);
+}
+
+body.theme-dark tr:nth-child(even) {
+  background-color: #444444;
+}
+
+body.theme-dark tr:hover {
+  background-color: #555555;
+}
+
+/* Ders Tablosu için Ödeme Durumu Renkleri */
+.payment-status-paid {
+  color: #2ECC71; /* Yeşil */
+  font-weight: bold;
+}
+
+.payment-status-unpaid {
+  color: #E74C3C; /* Kırmızı */
+  font-weight: bold;
+}
+
+.payment-status-partial {
+  color: #F39C12; /* Turuncu */
+  font-weight: bold;
+}
+
+/* Ders Tablosu */
+#lesson-table {
+  margin-top: 20px;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+  display: block;
+}
+
+/* Karanlık Tema için Ders Tablosu Ayarları */
+body.theme-dark .payment-status-paid {
+  color: #2ECC71;
+}
+
+body.theme-dark .payment-status-unpaid {
+  color: #E74C3C;
+}
+
+body.theme-dark .payment-status-partial {
+  color: #F39C12;
+}
+/* Mobil cihazlar için ek optimizasyonlar */
+@media (max-width: 640px) {
+  /* Form elemanlarını küçült */
+  input, select, textarea, button {
+    font-size: 0.85rem;
+    padding: 6px;
+  }
+
+  /* Başlıkları küçült */
+  h1 {
+    font-size: 1.5rem;
+  }
+
+  h2 {
+    font-size: 1.25rem;
+  }
+
+  /* Form ve tablo container’larını tam genişlik yap */
+  .container, #add-student-form, #add-payment-form, #student-list, #add-lesson-form, #lesson-list {
+    padding: 8px;
+    margin: 0 auto;
+    max-width: 100%;
+  }
+
+  /* Tabloyu kaydırılabilir yap ve yazı boyutunu küçült */
+  #student-table, #lesson-table {
+    font-size: 0.75rem;
+  }
+
+  #student-table th, #student-table td,
+  #lesson-table th, #lesson-table td {
+    padding: 4px;
+    font-size: 0.75rem;
+  }
+
+  /* Butonları küçült */
+  button {
+    padding: 6px;
+  }
+
+  /* Tilki maskotunu küçült */
+  header img {
+    width: 100px;
+    height: 100px;
+  }
+
+  /* Tema seçiciyi küçült */
+  #theme-selector {
+    font-size: 0.85rem;
+    padding: 4px;
+  }
+}
+
+/* Küçük ekranlarda tabloyu daha iyi göstermek için */
+@media (max-width: 640px) {
+  #student-table thead, #lesson-table thead {
+    display: none;
+  }
+
+  #student-table tbody tr, #lesson-table tbody tr {
+    display: block;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #000;
+  }
+
+  #student-table td, #lesson-table td {
+    display: block;
+    text-align: left;
+    padding: 5px;
+    border: none;
+    position: relative;
+    padding-left: 50%;
+  }
+
+  #student-table td:before, #lesson-table td:before {
+    content: attr(data-label);
+    position: absolute;
+    left: 5px;
+    width: 45%;
+    font-weight: bold;
+  }
+}
